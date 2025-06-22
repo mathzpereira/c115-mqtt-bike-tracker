@@ -17,8 +17,8 @@ TOPIC_LAT = "bike/gps/lat"
 TOPIC_LON = "bike/gps/lon"
 TOPIC_STATUS = "bike/status"
 
-lat_ref = -22.2535
-lon_ref = -45.7039
+lat_ref = -22.2572774
+lon_ref = -45.6963601
 safe_radius_km = 0.5
 
 lat = lat_ref
