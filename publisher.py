@@ -3,19 +3,17 @@ import paho.mqtt.client as mqtt
 import random
 import math
 import time
+import json
 from dotenv import load_dotenv
 
 load_dotenv()
 
 BROKER = os.getenv("HIVEMQ_BROKER")
 PORT = 8883
-
 USERNAME = os.getenv("HIVEMQ_PUBLISHER_USERNAME")
 PASSWORD = os.getenv("HIVEMQ_PUBLISHER_PASSWORD")
 
-TOPIC_LAT = "bike/gps/lat"
-TOPIC_LON = "bike/gps/lon"
-TOPIC_STATUS = "bike/status"
+TOPIC_UPDATE = "bike/gps/update"
 
 lat_ref = -22.2572774
 lon_ref = -45.6963601
@@ -24,7 +22,7 @@ safe_radius_km = 0.5
 lat = lat_ref
 lon = lon_ref
 
-client = mqtt.Client(client_id="BikePublisher", userdata=None, protocol=mqtt.MQTTv5)
+client = mqtt.Client(client_id="BikePublisher", protocol=mqtt.MQTTv5)
 client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS)
 client.username_pw_set(USERNAME, PASSWORD)
 client.connect(BROKER, PORT)
@@ -53,15 +51,15 @@ try:
         distance = haversine(lat, lon, lat_ref, lon_ref)
         status = "safe" if distance <= safe_radius_km else "out_of_zone"
 
-        client.publish(TOPIC_LAT, lat)
-        client.publish(TOPIC_LON, lon)
-        client.publish(TOPIC_STATUS, status)
+        payload = json.dumps({"lat": lat, "lon": lon, "status": status})
 
-        print(f"Publicando -> LAT: {lat}, LON: {lon}, STATUS: {status}")
+        client.publish(TOPIC_UPDATE, payload)
+
+        print(f"Publishing -> {payload}")
 
         time.sleep(3)
 
 except KeyboardInterrupt:
-    print("Encerrando publisher...")
+    print("Shutting down publisher...")
     client.loop_stop()
     client.disconnect()
