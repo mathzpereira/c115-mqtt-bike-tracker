@@ -2,6 +2,8 @@
 
 Este projeto, desenvolvido como parte da disciplina C115 - Conceitos e Tecnologias para Dispositivos Conectados, implementa um simulador de um **Sistema IoT Rastreador de Bicicletas**. A aplicação permite simular a movimentação de uma bicicleta em tempo real e exibir um mapa com a área segura, além do status (SAFE ou OUT_OF_ZONE).
 
+![Bike Tracker](static/bike_tracker.png)
+
 ## Tecnologias Utilizadas
 
 - **MQTT**: Comunicação entre o dispositivo IoT (simulado) e a aplicação
